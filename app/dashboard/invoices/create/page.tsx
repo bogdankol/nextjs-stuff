@@ -7,6 +7,7 @@ export default async function Page() {
  
   return (
     <main>
+      Just for commit to be pushed1
       <Breadcrumbs
         breadcrumbs={[
           { label: 'Invoices', href: '/dashboard/invoices' },
