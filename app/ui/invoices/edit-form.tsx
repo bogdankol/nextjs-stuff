@@ -9,7 +9,8 @@ import {
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
-import { updateInvoice } from '@/app/lib/actions';
+import { updateInvoice1, updateInvoice2 } from '@/app/lib/actions';
+import { useFormState } from 'react-dom';
 
 export default function EditInvoiceForm({
   invoice,
@@ -18,13 +19,21 @@ export default function EditInvoiceForm({
   invoice: InvoiceForm;
   customers: CustomerField[];
 }) {
-  const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
+  const updateInvoiceWithId = updateInvoice1.bind(null, invoice.id);
+  const initialState = {
+    message: null,
+    errors: {}
+  }
+  const [currentState, functionThatTriggerRerender] = useFormState(updateInvoice2.bind(null, invoice.id), initialState)
+  // prevState: State, formData: FormData
 
   return (
-    <form action={updateInvoiceWithId}>
+    // <form action={(formData: FormData) => updateInvoice1(invoice.id, formData)}>
+    // <form action={updateInvoiceWithId}>
+    <form action={functionThatTriggerRerender}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
-        <div className="mb-4">
+        <div className="mb-4" aria-describedby='customer-errors'>
           <label htmlFor="customer" className="mb-2 block text-sm font-medium">
             Choose customer
           </label>
@@ -46,10 +55,19 @@ export default function EditInvoiceForm({
             </select>
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
+
+          <div id="customer-error" aria-live="polite" aria-atomic="true">
+            {currentState.errors?.customerId &&
+              currentState.errors.customerId.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
+          </div>
         </div>
 
         {/* Invoice Amount */}
-        <div className="mb-4">
+        <div className="mb-4" aria-describedby='customer-errors'>
           <label htmlFor="amount" className="mb-2 block text-sm font-medium">
             Choose an amount
           </label>
@@ -67,6 +85,15 @@ export default function EditInvoiceForm({
               <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
+
+          <div id="customer-error" aria-live="polite" aria-atomic="true">
+            {currentState.errors?.amount &&
+              currentState.errors.amount.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
+          </div>
         </div>
 
         {/* Invoice Status */}
@@ -74,7 +101,7 @@ export default function EditInvoiceForm({
           <legend className="mb-2 block text-sm font-medium">
             Set the invoice status
           </legend>
-          <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
+          <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3" aria-describedby='customer-errors'>
             <div className="flex gap-4">
               <div className="flex items-center">
                 <input
@@ -108,6 +135,14 @@ export default function EditInvoiceForm({
                   Paid <CheckIcon className="h-4 w-4" />
                 </label>
               </div>
+            </div>
+            <div id="customer-error" aria-live="polite" aria-atomic="true">
+              {currentState.errors?.status &&
+                currentState.errors.status.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
             </div>
           </div>
         </fieldset>
