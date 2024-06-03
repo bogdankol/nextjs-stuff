@@ -8,6 +8,7 @@ import { Suspense } from 'react';
 import { fetchInvoicesPages } from '@/app/lib/data';
 import { headers } from 'next/headers'
 import { NextRequest } from "next/server"
+import path from 'node:path'
 
 export default async function Page({
   searchParams,
@@ -29,7 +30,8 @@ export default async function Page({
     pathname: headers().get('pathname'),
     href: request.nextUrl.href,
     origin: request.nextUrl.origin,
-    basePath: request.nextUrl.basePath
+    basePath: request.nextUrl.basePath,
+    cwd: process.cwd()
   })
 
   return (
