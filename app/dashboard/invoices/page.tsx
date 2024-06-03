@@ -27,7 +27,7 @@ export default async function Page({
   console.log("HEADERS", {
     url: headers().get('url'),
     pathname: headers().get('pathname'),
-    nexturl: request.nextUrl.pathname
+    nexturl: request.nextUrl
   })
 
   return (
