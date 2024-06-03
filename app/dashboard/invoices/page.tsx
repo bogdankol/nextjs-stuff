@@ -21,7 +21,10 @@ export default async function Page({
   const currentPage = Number(searchParams?.page) || 1
 
   const totalPages = await fetchInvoicesPages(query);
-  console.log("HEADERS", {headers: headers().get('x-url')})
+  console.log("HEADERS", {
+    url: headers().get('url'),
+    pathname: headers().get('pathname')
+  })
 
   return (
     <div className="w-full">
