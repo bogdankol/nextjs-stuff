@@ -31,7 +31,7 @@ export default async function Page({
     href: request.nextUrl.href,
     origin: request.nextUrl.origin,
     basePath: request.nextUrl.basePath,
-    cwd: process.cwd()
+    cwd: __dirname
   })
 
   return (
