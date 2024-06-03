@@ -7,7 +7,8 @@ import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchInvoicesPages } from '@/app/lib/data';
 import { headers } from 'next/headers'
- 
+import { NextRequest } from "next/server"
+
 export default async function Page({
   searchParams,
 }: {
@@ -19,11 +20,14 @@ export default async function Page({
 
   const query  = searchParams?.query || ''
   const currentPage = Number(searchParams?.page) || 1
+  const referer = headers().get('referer') as string
+  const request = new NextRequest(referer)
 
   const totalPages = await fetchInvoicesPages(query);
   console.log("HEADERS", {
     url: headers().get('url'),
-    pathname: headers().get('pathname')
+    pathname: headers().get('pathname'),
+    nexturl: request.nextUrl.pathname
   })
 
   return (
